@@ -9,6 +9,12 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.ColumnInfo
+import androidx.room.Database
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.schuster.einkaufsliste.databinding.ActivityMainBinding
 
@@ -20,8 +26,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fab: FloatingActionButton
     private lateinit var shoppingItems: ArrayList<String>
     private lateinit var itemAdapter: ArrayAdapter<String>
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
