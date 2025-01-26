@@ -1,6 +1,7 @@
 package com.schuster.einkaufsliste
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.widget.AdapterView.OnItemLongClickListener
@@ -9,18 +10,29 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.ColumnInfo
-import androidx.room.Database
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.schuster.einkaufsliste.databinding.ActivityMainBinding
-
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import android.util.Log
 
 class MainActivity : AppCompatActivity() {
+    fun saveArrayList(context: Context, arrayList: ArrayList<String>, filename: String) {
+        context.openFileOutput(filename, Context.MODE_PRIVATE).use {
+            ObjectOutputStream(it).writeObject(arrayList)
+        }
+    }
 
+    // Loading the ArrayList
+    fun loadArrayList(context: Context, filename: String): ArrayList<String>? {
+        return try {
+            context.openFileInput(filename).use {
+                ObjectInputStream(it).readObject() as ArrayList<String>
+            }
+        } catch (e: Exception) {
+            null // Handle exceptions appropriately
+        }
+    }
     private lateinit var binding: ActivityMainBinding
     private lateinit var lvTodoList: ListView
     private lateinit var fab: FloatingActionButton
@@ -36,6 +48,11 @@ class MainActivity : AppCompatActivity() {
         fab = findViewById(R.id.floatingActionButton)
         shoppingItems = ArrayList()
 
+        try {
+            shoppingItems = loadArrayList(this, "shoppingItems.txt") ?: ArrayList()
+         } catch (e: Exception) {
+             Log.e("MainActivity", "Error loading shopping items", e)
+         }
 
         itemAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, shoppingItems)
         lvTodoList.adapter = itemAdapter
@@ -69,5 +86,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    }
+    override fun onPause() {
+        super.onPause()
+        saveArrayList(this, shoppingItems, "shoppingItems.txt")
     }
 }
