@@ -2,7 +2,6 @@ package com.schuster.einkaufsliste
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.widget.AdapterView.OnItemLongClickListener
@@ -16,11 +15,9 @@ import com.schuster.einkaufsliste.databinding.ActivityMainBinding
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import android.util.Log
+import com.google.android.material.appbar.MaterialToolbar
 
-public var ShoppingItem: Int = 0
-public var ShoppingName: String = ""
-
-class MainActivity : AppCompatActivity() {
+class Second : AppCompatActivity() {
     fun saveArrayList(context: Context, arrayList: ArrayList<String>, filename: String) {
         context.openFileOutput(filename, Context.MODE_PRIVATE).use {
             ObjectOutputStream(it).writeObject(arrayList)
@@ -42,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fab: FloatingActionButton
     private lateinit var shoppingItems: ArrayList<String>
     private lateinit var itemAdapter: ArrayAdapter<String>
+    private lateinit var Tobbar: MaterialToolbar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -51,12 +49,13 @@ class MainActivity : AppCompatActivity() {
         lvTodoList = findViewById(R.id.lvTodoList)
         fab = findViewById(R.id.floatingActionButton)
         shoppingItems = ArrayList()
+        Tobbar = findViewById(R.id.materialToolbar)
 
         try {
-            shoppingItems = loadArrayList(this, "shoppingItems.txt") ?: ArrayList()
-         } catch (e: Exception) {
-             Log.e("MainActivity", "Error loading shopping items", e)
-         }
+            shoppingItems = loadArrayList(this, "$ShoppingItem.txt") ?: ArrayList()
+        } catch (e: Exception) {
+            Log.e("Second", "Error loading shopping items", e)
+        }
 
         itemAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, shoppingItems)
         lvTodoList.adapter = itemAdapter
@@ -65,18 +64,7 @@ class MainActivity : AppCompatActivity() {
             shoppingItems.removeAt(pos)
             itemAdapter.notifyDataSetChanged()
             Toast.makeText(applicationContext, "Element gelöscht", Toast.LENGTH_SHORT).show()
-            //Delete Items in Group
-            var NoNe = ArrayList<String>()
-            saveArrayList(this, NoNe, "$pos.txt")
             true
-        }
-        lvTodoList.setOnItemClickListener { parent, view, position, id ->
-            //Neue Activity öffnen
-            val intent = Intent(this, Second::class.java)
-            startActivity(intent)
-
-            ShoppingItem = position
-            ShoppingName = shoppingItems[position]
         }
         fab.setOnClickListener {
             var builder = AlertDialog.Builder(this)
@@ -97,12 +85,18 @@ class MainActivity : AppCompatActivity() {
 
             builder.show()
         }
+        Tobbar.setNavigationIcon(getDrawable(R.drawable.back))
+        Tobbar.setNavigationOnClickListener {
+            finish()
+        }
+        //Titel der Toolbar auf die Gruppe ändern -> ShoppingItem
+        Tobbar.title = "$ShoppingName"
 
 
 
     }
     override fun onPause() {
         super.onPause()
-        saveArrayList(this, shoppingItems, "shoppingItems.txt")
+        saveArrayList(this, shoppingItems, "$ShoppingItem.txt")
     }
 }
