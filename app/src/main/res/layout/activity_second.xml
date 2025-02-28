@@ -24,14 +24,25 @@
             android:id="@+id/materialToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:background="?attr/colorPrimary"
+            android:foregroundGravity="right"
+            android:gravity="end"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
+            app:buttonGravity="center_vertical|bottom"
             app:title="Einkaufsliste" />
 
         <ListView
             android:id="@+id/lvTodoList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#FFFFFF"
+            android:backgroundTintMode="add"
+            android:foregroundTint="#00000000">
+
+        </ListView>
+
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
