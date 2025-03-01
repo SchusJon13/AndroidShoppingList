@@ -79,7 +79,7 @@ class Second : AppCompatActivity() {
 
             val newCount = currentCount + 1
             // Remove the old item from the list
-            if (newCount > 0 && isLongClick == false){
+            if (newCount > -1 && isLongClick == false){
                 shoppingItems.removeAt(position)
                 val newItem = "${newCount}x $itemName"
                 shoppingItems.add(position, newItem)
