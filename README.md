@@ -1,4 +1,4 @@
-# AndroidTodoList
+# AndroidShoppingList
 Eine Einkaufsliste, die im Rahmen eines Projektes in der Schule entstanden ist.
 # Für Verbesserungsvorschläge
 
