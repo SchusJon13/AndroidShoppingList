@@ -64,7 +64,7 @@ class Second : AppCompatActivity() {
         Tobbar = findViewById(R.id.materialToolbar)
 
         try {
-            shoppingItems = loadArrayList(this, "$ShoppingItem.txt") ?: ArrayList()
+            shoppingItems = loadArrayList(this, "$ShoppingName.txt") ?: ArrayList()
         } catch (e: Exception) {
             Log.e("Second", "Error loading shopping items", e)
         }
@@ -188,7 +188,7 @@ class Second : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        saveArrayList(this, shoppingItems, "$ShoppingItem.txt")
+        saveArrayList(this, shoppingItems, "$ShoppingName.txt")
     }
 
     }
